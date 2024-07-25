@@ -56,15 +56,13 @@ export default class CommentService extends APIService {
         commentId: string,
         comment: string,
     ): Promise<ApiResponse<Comment>> => {
-
         try {
-
             const userAccessToken = JSON.parse(localStorage.getItem('access-token')) as AccessToken;
             const response = await this.apiClient.put(`/tasks/${taskId}/comments/${commentId}`,
                 { comment },
                 {
                     headers: {
-                        Authorization: `Bearer${userAccessToken.token}`,
+                        Authorization: `Bearer ${userAccessToken.token}`,
                     },
                 });
 
