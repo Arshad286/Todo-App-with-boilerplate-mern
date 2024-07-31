@@ -1,25 +1,28 @@
 import { applicationController, Request, Response } from '../../application';
 import { HttpStatusCodes } from '../../http';
 import SharedTaskService from '../shared-task-service';
-import { CreateSharedTasksParams } from '../types';
+import {
+  SharedTask,
+  GetAllSharedTasksParams,
+  CreateSharedTasksParams,
+} from '../types';
+
 import { serializeSharedTaskAsJSON } from './shared-task-serializer';
 
 export class SharedTaskController {
-  private readonly sharedTaskService = SharedTaskService;
-  private readonly serializeSharedTaskAsJSON = serializeSharedTaskAsJSON;
-
   createSharedTask = applicationController(
     async (req: Request<CreateSharedTasksParams>, res: Response) => {
-      const sharedTasks = await Promise.all(
+      const sharedTasks: SharedTask[] = await Promise.all(
         req.body.accountIds.map((accountId) =>
-          this.sharedTaskService.createSharedTask({
+          SharedTaskService.createSharedTask({
             taskId: req.body.taskId,
             accountId,
           }),
         ),
       );
-
-      const sharedTasksJSON = sharedTasks.map(this.serializeSharedTaskAsJSON);
+      const sharedTasksJSON = sharedTasks.map((sharedTask) =>
+        serializeSharedTaskAsJSON(sharedTask),
+      );
 
       res.status(HttpStatusCodes.CREATED).send(sharedTasksJSON);
     },
@@ -27,13 +30,16 @@ export class SharedTaskController {
 
   getSharedTasks = applicationController(
     async (req: Request, res: Response) => {
-      const params = { accountId: req.accountId };
+      const params: GetAllSharedTasksParams = {
+        accountId: req.accountId,
+      };
 
-      const sharedTasks = await this.sharedTaskService.getSharedTasksForAccount(
+      const sharedTasks = await SharedTaskService.getSharedTasksForAccount(
         params,
       );
-
-      const sharedTasksJSON = sharedTasks.map(this.serializeSharedTaskAsJSON);
+      const sharedTasksJSON = sharedTasks.map((sharedTask) =>
+        serializeSharedTaskAsJSON(sharedTask),
+      );
 
       res.status(HttpStatusCodes.OK).send(sharedTasksJSON);
     },

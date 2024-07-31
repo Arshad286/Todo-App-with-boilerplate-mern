@@ -7,6 +7,7 @@ import {
   CreateAccountParamsByPhoneNumber,
   CreateAccountParamsByUsernameAndPassword,
   GetAccountParams,
+  GetAllAccountsParams,
   PhoneNumber,
   ResetPasswordParams,
   UpdateAccountDetailsParams,
@@ -57,6 +58,29 @@ export class AccountController {
 
       res.status(HttpStatusCodes.OK).send(accountJSON);
     },
+  );
+  
+  getAllAccounts = applicationController(
+     async (req: Request, res: Response) => {
+      try {
+        const search = (req.query.search as string) || '';
+        const page = +(req.query.page as string) || 1;
+        const size = +(req.query.size as string) || 10;
+  
+        const params: GetAllAccountsParams = { search, page, size };
+        const accounts = await AccountService.getAllAccounts(params);
+        const accountsJSON = accounts.map((account) =>
+          serializeAccountAsJSON(account)
+        );
+  
+        res.status(HttpStatusCodes.OK).send(accountsJSON);
+      } catch (error) {
+        res.status(HttpStatusCodes.SERVER_ERROR).send({
+          message: 'Failed to fetch accounts',
+          error: error.message,
+        });
+      }
+    }
   );
 
   updateAccount = applicationController(

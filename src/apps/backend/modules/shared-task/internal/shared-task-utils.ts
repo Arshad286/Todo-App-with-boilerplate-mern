@@ -1,23 +1,55 @@
-import { ShareTask } from '../types';
+import { SharedTask } from '../types';
 import { SharedTaskDB } from './store/shared-task-db';
+import { Task } from '../../task/types';
+import { Account } from '../../account/types';
 import { Types } from 'mongoose';
 
 export default class SharedTaskUtil {
   public static convertSharedTaskDBToSharedTask(
     sharedTaskDb: SharedTaskDB,
-  ): ShareTask {
-    return {
-      id: sharedTaskDb._id.toString(),
-      task: this.convertTask(sharedTaskDb.task),
-      account: sharedTaskDb.account.toString(),
-    };
+  ): SharedTask {
+    const sharedTask = new SharedTask();
+    sharedTask.id = sharedTaskDb._id.toString();
+
+    if (Types.ObjectId.isValid(sharedTaskDb.task.toString())) {
+      sharedTask.task = sharedTaskDb.task.toString();
+    } else {
+      sharedTask.task = SharedTaskUtil.convertTask(sharedTaskDb.task);
+    }
+
+    sharedTask.account = SharedTaskUtil.convertAccount(sharedTaskDb.account);
+    return sharedTask;
   }
 
-  private static convertTask(task: Types.ObjectId | any): string | any {
-    if (task instanceof Types.ObjectId) {
+  private static convertTask(task: Types.ObjectId | Task): string | Task {
+    if (Types.ObjectId.isValid(task.toString())) {
       return task.toString();
     } else {
-      return task;
+      const tsk = task as Task;
+      return {
+        id: tsk.id,
+        account: tsk.account,
+        description: tsk.description,
+        title: tsk.title,
+      } as Task;
+    }
+  }
+
+  private static convertAccount(
+    account: Types.ObjectId | Account,
+  ): string | Account {
+    if (Types.ObjectId.isValid(account.toString())) {
+      return account.toString();
+    } else {
+      const acc = account as Account;
+      return {
+        id: acc.id,
+        firstName: acc.firstName,
+        lastName: acc.lastName,
+        username: acc.username,
+        hashedPassword: acc.hashedPassword,
+        phoneNumber: acc.phoneNumber,
+      } as Account;
     }
   }
 }

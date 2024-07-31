@@ -9,11 +9,6 @@ export interface SharedTaskDB {
 
 export const SharedTaskDBSchema: Schema = new Schema<SharedTaskDB>(
   {
-    active: {
-      type: Boolean,
-      default: true,
-    },
-
     task: {
       type: Schema.Types.ObjectId,
       ref: 'Task',
@@ -27,6 +22,12 @@ export const SharedTaskDBSchema: Schema = new Schema<SharedTaskDB>(
       index: true,
       required: true,
     },
+
+    active: {
+      type: Boolean,
+      default: true,
+    },
+
   },
   {
     collection: 'shared-tasks',

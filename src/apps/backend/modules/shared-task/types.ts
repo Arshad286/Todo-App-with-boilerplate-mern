@@ -1,44 +1,38 @@
-import { Account } from '../account';
 import { ApplicationError } from '../application';
 import { HttpStatusCodes } from '../http';
 import { Task } from '../task/types';
+import { Account } from '../account/types';
 
-export class ShareTask {
+export class SharedTask {
   id: string;
-  task: Task;
+  task: string | Task;
   account: string | Account;
-
-  constructor(id: string, task: Task, account: Account) {
-    this.id = id;
-    this.task = task;
-    this.account = account;
-  }
 }
 
-export interface CreateSharedTaskParmas {
+export type CreateSharedTaskParams = {
   taskId: string;
   accountId: string;
-}
+};
 
-export interface CreateSharedTasksParams {
+export type CreateSharedTasksParams = {
   taskId: string;
   accountIds: string[];
-}
+};
 
 export interface GetSharedTaskParams {
-  shareTaskId: string;
+  sharedTaskId: string;
   accountId: string;
 }
 
-export interface GetAllSharedTaskParams {
+export interface GetAllSharedTasksParams {
   accountId: string;
 }
 
 export class SharedTaskNotFoundError extends ApplicationError {
   code: string;
 
-  constructor(shareTaskId: string) {
-    super(`Shared task with ID ${shareTaskId} not found`);
+  constructor(sharedTaskId: string) {
+    super(`Shared task with ID ${sharedTaskId} not found.`);
     this.code = 'SHARED_TASK_NOT_FOUND';
     this.httpStatusCode = HttpStatusCodes.NOT_FOUND;
   }
