@@ -5,7 +5,7 @@ export const serializeCommentAsJSON = (comment: Comment): unknown => ({
   task: comment.task,
   account:
     typeof comment.account === 'string'
-      ?  comment.account 
+      ? comment.account
       : {
           id: comment.account.id,
           firstName: comment.account.firstName,
