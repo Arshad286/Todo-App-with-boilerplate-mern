@@ -27,11 +27,9 @@ const SharedTasks: React.FC = () => {
         if (Array.isArray(response.data)) {
           setSharedTasks(response.data);
         } else {
-          console.error('Unexpected data format:', response.data);
           toast.error('Failed to load shared tasks');
         }
       } catch (error) {
-        console.error('Error fetching shared tasks:', error); 
         toast.error((error as AsyncError).message || 'An error occurred');
       } finally {
         setIsLoading(false);

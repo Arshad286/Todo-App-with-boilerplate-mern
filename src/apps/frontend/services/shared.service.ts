@@ -37,14 +37,12 @@ export default class SharedTaskService extends APIService {
           Authorization: `Bearer ${userAccessToken.token}`,
         },
       });
-      console.log('API Response Data:', response.data); // Log the response data for debugging
       if (Array.isArray(response.data)) {
         const sharedTasks: SharedTask[] = response.data.map(
           (taskData: any) => new SharedTask(taskData),
         );
         return new ApiResponse(sharedTasks, undefined);
       } else {
-        console.error('Unexpected data format:', response.data);
         return new ApiResponse(undefined, new ApiError(response.data));
       }
     } catch (e) {

@@ -132,7 +132,7 @@ const TaskSection: React.FC<TaskSectionProps> = ({
                 kind={ButtonKind.SECONDARY}
                 size={ButtonSize.DEFAULT}
                 startEnhancer={
-                  <img src="assets/svg/ellipsis-con.svg" alt="Share task" />
+                  <img src="assets/svg/share-icon.svg" alt="Share task" />
                 }
               >
                 Share

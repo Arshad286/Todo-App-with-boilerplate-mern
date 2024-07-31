@@ -34,7 +34,7 @@ const CommentList: React.FC<CommentListProps> = ({ taskId }) => {
     };
 
     fetchComments();
-  }, [taskId]); // Ensure that only `taskId` is in the dependency array
+  }, [taskId]); 
 
   const handleDeleteComment = (commentId: string) => {
     deleteComment(taskId, commentId)
@@ -52,7 +52,7 @@ const CommentList: React.FC<CommentListProps> = ({ taskId }) => {
 
   const handleUpdateComment = () => {
     if (editingCommentId) {
-      updateComment(editingCommentId, taskId, editingComment)
+      updateComment( editingCommentId,taskId, editingComment, )
         .then((updatedComment) => {
           setCommentsList(
             commentsList.map((comment) =>
