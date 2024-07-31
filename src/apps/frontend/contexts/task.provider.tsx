@@ -3,7 +3,7 @@ import React, {
 } from 'react';
 
 import TaskService from '../services/task.service';
-import { ApiResponse, AsyncError } from '../types';
+import {  ApiResponse, AsyncError } from '../types';
 import { Task } from '../types/task';
 
 import useAsync from './async.hook';
@@ -17,7 +17,7 @@ type TaskContextType = {
   getTasksError: AsyncError;
   isAddTaskLoading: boolean;
   isDeleteTaskLoading: boolean;
-  isGetTasksLoading: boolean;
+  isGetTasksLoading : boolean;
   isUpdateTaskLoading: boolean;
   setTasksList: React.Dispatch<React.SetStateAction<Task[]>>;
   task: Task;
@@ -49,7 +49,6 @@ Promise<ApiResponse<void>> => taskService.deleteTask(taskId);
 
 export const TaskProvider: React.FC<PropsWithChildren> = ({ children }) => {
   const [tasksList, setTasksList] = useState<Task[]>([]);
-
   const getTasksFn = async (): Promise<ApiResponse<Task[]>> => {
     const response = await taskService.getTasks();
     setTasksList(response.data);

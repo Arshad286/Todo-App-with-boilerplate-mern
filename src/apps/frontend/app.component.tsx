@@ -8,6 +8,7 @@ import { Config } from './helpers';
 import { AppRoutes } from './routes';
 import InspectLet from './vendor/inspectlet';
 import { CommentProvider } from './contexts/comment.provider';
+import { SharedTaskProvider } from './contexts/shared-task.provider';
 
 
 
@@ -24,10 +25,12 @@ export default function App(): React.ReactElement {
     <AuthProvider>
       <AccountProvider>
         <CommentProvider>
+          <SharedTaskProvider>
         <Toaster />
         <Router>
           <AppRoutes />
         </Router>
+      </SharedTaskProvider>
         </CommentProvider>
       </AccountProvider>
     </AuthProvider>

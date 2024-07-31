@@ -41,7 +41,7 @@ const TaskModal: React.FC<TaskModalProps> = ({
   };
 
   return (
-    <Modal isModalOpen={isModalOpen}>
+    <Modal isOpen={isModalOpen}>
       <div className="absolute right-1 top-1 sm:right-5 sm:top-5">
         <Button
           onClick={() => setIsModalOpen(false)}
