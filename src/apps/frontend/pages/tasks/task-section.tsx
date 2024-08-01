@@ -14,6 +14,9 @@ import { AsyncError } from '../../types';
 import { ButtonKind, ButtonSize } from '../../types/button';
 import { Task } from '../../types/task';
 
+import CommentList from '../comment/comment';
+import AddComment from '../comment/new-comment';
+
 import TaskModal from './task-modal';
 import useTaskForm from './tasks-form.hook';
 
@@ -31,16 +34,20 @@ const TaskSection: React.FC<TaskSectionProps> = ({
   tasks,
 }) => {
   const [updateTaskModal, setUpdateTaskModal] = useState(false);
+  const [selectedTaskId, setSelectedTaskId] = useState<string | null>(null);
+
 
   const onSuccess = () => {
     toast.success('Task has been updated successfully');
     setUpdateTaskModal(false);
   };
 
+
   const { updateTaskFormik, setFormikFieldValue } = useTaskForm({
     onError,
     onSuccess,
   });
+
 
   const handleTaskOperation = (task: Task) => {
     setUpdateTaskModal(!updateTaskModal);
@@ -48,6 +55,11 @@ const TaskSection: React.FC<TaskSectionProps> = ({
     setFormikFieldValue(updateTaskFormik, 'id', task.id);
     setFormikFieldValue(updateTaskFormik, 'description', task.description);
   };
+   
+  const handleViewComments = (taskId: string) => {
+    setSelectedTaskId((prevId) => (prevId === taskId ? null : taskId));
+  }
+
 
   if (isGetTasksLoading) {
     return (
@@ -74,6 +86,17 @@ const TaskSection: React.FC<TaskSectionProps> = ({
           <VerticalStackLayout gap={3}>
             <LabelLarge>{task.title}</LabelLarge>
             <ParagraphSmall>{task.description}</ParagraphSmall>
+
+            <Button onClick={() => handleViewComments(task.id)}>
+              {selectedTaskId === task.id ? 'Hide Comments' : 'View Comments'}
+            </Button>
+            {selectedTaskId === task.id && (
+              <div>
+                <AddComment taskId={task.id} />
+                <CommentList taskId={task.id} />
+              </div>
+            )}
+
           </VerticalStackLayout>
 
           <div className="absolute right-4 top-4">
@@ -109,6 +132,7 @@ const TaskSection: React.FC<TaskSectionProps> = ({
         setIsModalOpen={setUpdateTaskModal}
         btnText={'Update Task'}
       />
+    
     </VerticalStackLayout>
   );
 };
