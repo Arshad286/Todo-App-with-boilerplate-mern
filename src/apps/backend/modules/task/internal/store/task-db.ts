@@ -6,6 +6,7 @@ export interface TaskDB {
   active: boolean;
   description: string;
   title: string;
+  sharedTask: boolean;
 }
 
 export const TaskDbSchema: Schema = new Schema<TaskDB>(
@@ -28,6 +29,10 @@ export const TaskDbSchema: Schema = new Schema<TaskDB>(
     title: {
       type: String,
       required: true,
+    },
+    sharedTask: {
+      type: Boolean,
+      default: false, 
     },
   },
   {

@@ -6,23 +6,27 @@ export class Task {
   account: string;
   description: string;
   title: string;
+  sharedTask: boolean;
 }
 
 export type GetAllTaskParams = {
   accountId: string;
   page?: number;
   size?: number;
+  sharedTask?: boolean;
 };
 
 export type GetTaskParams = {
   accountId: string;
   taskId: string;
+  sharedTask?: boolean;
 };
 
 export type CreateTaskParams = {
   accountId: string;
   description: string;
   title: string;
+  sharedTask?: boolean;
 };
 
 export type UpdateTaskParams = {
@@ -30,6 +34,7 @@ export type UpdateTaskParams = {
   description: string;
   taskId: string;
   title: string;
+  sharedTask?: boolean;
 };
 
 export type DeleteTaskParams = {
