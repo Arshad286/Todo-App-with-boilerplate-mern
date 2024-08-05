@@ -1,6 +1,6 @@
 import { applicationController, Request, Response } from '../../application';
 import { HttpStatusCodes } from '../../http';
-import ShareTaskRequestService from '../share-task-Request-service';
+import ShareTaskRequestService from '../share-task-request-service';
 import {
   ShareTaskRequest,
   CreateShareTasksRequestParams,

@@ -21,7 +21,7 @@ export class TaskController {
       accountId: req.accountId,
       description: req.body.description,
       title: req.body.title,
-      sharedTask: req.body.sharedTask,
+      sharedTask: req.body.sharedTask ?? false,
     });
     const taskJSON = serializeTaskAsJSON(task);
 
