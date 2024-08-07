@@ -23,7 +23,7 @@ describe('Shared Task API', () => {
       });
 
       const { account: anotherAccount } = await createAccount();
-
+      
       const res = await chai
         .request(app)
         .post(`/api/tasks/${task.id}/share-task-requests`)
