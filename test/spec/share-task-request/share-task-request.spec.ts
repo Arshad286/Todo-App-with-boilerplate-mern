@@ -105,7 +105,6 @@ describe('Shared Task API', () => {
         .request(app)
         .get(`/api/tasks?sharedTask=true`)
         .set('Authorization', 'Bearer invalid-token');
-
       expect(res.status).to.eq(403);
     });
   });
