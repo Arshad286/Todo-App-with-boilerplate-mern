@@ -36,8 +36,8 @@ const CommentList: React.FC<CommentListProps> = ({ taskId }) => {
     fetchComments();
   }, [taskId]); 
 
-  const handleDeleteComment = (commentId: string) => {
-    deleteComment(taskId, commentId)
+  const handleDeleteComment = ( commentId: string) => {
+    deleteComment( taskId, commentId)
       .then(() => {
         setCommentsList(commentsList.filter((comment) => comment.id !== commentId));
         toast.success('Comment deleted successfully');
@@ -63,32 +63,33 @@ const CommentList: React.FC<CommentListProps> = ({ taskId }) => {
           setEditingComment('');
           toast.success('Comment updated successfully');
         })
-        .catch((error: AsyncError) => toast.error(error.message));
-    }
+        .catch((error: AsyncError) => {
+          toast.error(error.message);
+        });
+    } 
   };
-
   return (
     <div className="mt-4">
       {isGetCommentsLoading && <p>Loading comments...</p>}
       {commentsList.length === 0 && !isGetCommentsLoading && <p>No comments available</p>}
       {commentsList.map((comment: Comment) => (
-        <div key={comment.id} className="mb-4 p-2 border rounded">
+        <div key={comment.id} className="mb-4 p-4 bg-white border border-gray-200 rounded-lg shadow-sm hover:bg-gray-50">
           {editingCommentId === comment.id ? (
             <div>
               <textarea
                 value={editingComment}
                 onChange={(e) => setEditingComment(e.target.value)}
-                className="w-full p-2 border rounded mb-2"
-              />
+                className="w-full p-2 border border-gray-300 rounded-md mb-2 text-gray-700"
+               />
               <button
                 onClick={handleUpdateComment}
-                className="px-4 py-2 bg-green-500 text-white rounded"
-              >
+                className="px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600"
+               >
                 Update
               </button>
               <button
                 onClick={() => setEditingCommentId(null)}
-                className="ml-2 px-4 py-2 bg-gray-500 text-white rounded"
+                className="ml-2 px-4 py-2 bg-gray-500 text-white rounded-md hover:bg-red-600"
               >
                 Cancel
               </button>
