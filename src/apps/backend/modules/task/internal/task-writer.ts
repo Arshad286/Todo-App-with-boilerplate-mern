@@ -17,7 +17,6 @@ export default class TaskWriter {
       description: params.description,
       title: params.title,
       active: true,
-      sharedTask: params.sharedTask ?? false,
     });
     return TaskUtil.convertTaskDBToTask(createdTask);
   }
@@ -33,7 +32,6 @@ export default class TaskWriter {
         $set: {
           description: params.description,
           title: params.title,
-          sharedTask: params.sharedTask,
         },
       },
       { new: true },

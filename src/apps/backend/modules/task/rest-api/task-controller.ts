@@ -21,7 +21,6 @@ export class TaskController {
       accountId: req.accountId,
       description: req.body.description,
       title: req.body.title,
-      sharedTask: req.body.sharedTask ?? false,
     });
     const taskJSON = serializeTaskAsJSON(task);
 
@@ -90,7 +89,6 @@ export class TaskController {
       taskId: req.params.id,
       description: req.body.description,
       title: req.body.title,
-      sharedTask: req.body.sharedTask,
     });
     const taskJSON = serializeTaskAsJSON(updatedTask);
 

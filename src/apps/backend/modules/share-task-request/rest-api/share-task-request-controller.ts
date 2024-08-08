@@ -4,6 +4,7 @@ import ShareTaskRequestService from '../share-task-request-service';
 import {
   ShareTaskRequest,
   CreateShareTasksRequestParams,
+  ShareTaskRequestStatus,
 } from '../types';
 
 import { serializeShareRequestTaskAsJSON } from './share-task-request-serializer';
@@ -11,12 +12,15 @@ import { serializeShareRequestTaskAsJSON } from './share-task-request-serializer
 export class ShareTaskRequestController {
   createShareRequestTask = applicationController(
     async (req: Request<CreateShareTasksRequestParams>, res: Response) => {
+      const { taskId, accountIds } = req.body;
+
       const shareTasksRequest: ShareTaskRequest[] = await Promise.all(
-        req.body.accountIds.map((accountId) =>
+        accountIds.map((accountId) =>
           ShareTaskRequestService.createShareTaskRequest({
-            taskId: req.body.taskId,
+            taskId,
             accountId,
-            status: req.body.status,
+            status: req.body.status || ShareTaskRequestStatus.ACCEPTED,
+            sharedTask: req.body.sharedTask, 
           }),
         ),
       );

@@ -5,5 +5,4 @@ export const serializeTaskAsJSON = (task: Task): unknown => ({
   account: task.account,
   description: task.description,
   title: task.title,
-  sharedTask: task.sharedTask,
 });

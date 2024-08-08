@@ -6,6 +6,7 @@ export interface ShareTaskRequestDB  {
   task: Types.ObjectId;
   account: Types.ObjectId;
   status: ShareTaskRequestStatus;
+  sharedTask: boolean;
   active: boolean;
 }
 
@@ -27,11 +28,16 @@ export const ShareTaskRequestDBSchema: Schema = new Schema<ShareTaskRequestDB>(
 
     status: {
       type: String,
-      enum: Object.values(ShareTaskRequestStatus),
+      enum: ShareTaskRequestStatus,
       default: ShareTaskRequestStatus.ACCEPTED,
       required: true,
     },
 
+    sharedTask: {
+      type: Boolean,
+      default: false, 
+    },
+    
     active: {
       type: Boolean,
       default: true,
@@ -39,7 +45,7 @@ export const ShareTaskRequestDBSchema: Schema = new Schema<ShareTaskRequestDB>(
 
   },
   {
-    collection: 'share-tasks-reuqest',
+    collection: 'share-tasks-request',
     timestamps: {
       createdAt: 'createdAt',
       updatedAt: 'updatedAt',

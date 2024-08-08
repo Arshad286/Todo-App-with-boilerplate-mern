@@ -14,8 +14,10 @@ export default class TaskReader {
     const taskDb = await TaskRepository.findOne({
       _id: params.taskId,
       account: params.accountId,
+      sharedTask: params.sharedTask ,
       active: true,
     });
+
     if (!taskDb) {
       throw new TaskNotFoundError(params.taskId);
     }
@@ -26,12 +28,17 @@ export default class TaskReader {
   public static async getTasksForAccount(
     params: GetAllTaskParams,
   ): Promise<Task[]> {
-    const query: any = {
+    const query:{
+      account: string;
+      active: boolean;
+      sharedTask: boolean;
+    }= {
       account: params.accountId,
       active: true,
+      sharedTask: params.sharedTask,
     };
 
-    if (params.sharedTask !== undefined) {
+    if (typeof params.sharedTask === 'boolean') {
       query.sharedTask = params.sharedTask;
     }
 

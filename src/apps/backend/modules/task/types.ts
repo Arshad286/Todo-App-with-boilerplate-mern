@@ -6,7 +6,6 @@ export class Task {
   account: string;
   description: string;
   title: string;
-  sharedTask: boolean;
 }
 
 export type GetAllTaskParams = {
@@ -26,15 +25,13 @@ export type CreateTaskParams = {
   accountId: string;
   description: string;
   title: string;
-  sharedTask?: boolean;
-};
+}
 
 export type UpdateTaskParams = {
   accountId: string;
   description: string;
   taskId: string;
   title: string;
-  sharedTask?: boolean;
 };
 
 export type DeleteTaskParams = {
