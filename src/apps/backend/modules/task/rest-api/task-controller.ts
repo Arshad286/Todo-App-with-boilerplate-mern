@@ -50,6 +50,7 @@ export class TaskController {
     const task = await TaskService.getTaskForAccount({
       accountId: req.accountId,
       taskId: req.params.id,
+      sharedTask: req.query.sharedTask === 'true',
     });
     const taskJSON = serializeTaskAsJSON(task);
 
@@ -62,6 +63,7 @@ export class TaskController {
     req: Request,
     res: Response,
   ) => {
+  
     const page = +req.query.page;
     const size = +req.query.size;
     const sharedTask = req.query.sharedTask === 'true';
@@ -80,6 +82,26 @@ export class TaskController {
       .send(tasksJSON);
   });
 
+  getSharedTasks = applicationController(async (
+    req: Request,
+    res: Response,
+  ) => {
+    const page = +req.query.page;
+    const size = +req.query.size;
+    const params: GetAllTaskParams = {
+      accountId: req.accountId,
+      page,
+      size,
+    };
+
+    const tasks = await TaskService.getSharedTasksForAccount(params)
+    const tasksJSON = tasks.map((task) => serializeTaskAsJSON(task));
+
+    res
+      .status(HttpStatusCodes.OK)
+      .send(tasksJSON);
+  });
+  
   updateTask = applicationController(async (
     req: Request<UpdateTaskParams>,
     res: Response,

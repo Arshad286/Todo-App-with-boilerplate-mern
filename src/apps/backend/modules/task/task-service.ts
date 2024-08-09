@@ -29,4 +29,8 @@ export default class TaskService {
   public static async getTasksForAccount(params: GetAllTaskParams): Promise<Task[]> {
     return TaskReader.getTasksForAccount(params);
   }
+  
+  public static async getSharedTasksForAccount(params: GetAllTaskParams): Promise<Task[]> {
+    return TaskReader.getSharedTasksForAccount(params);
+  }
 }

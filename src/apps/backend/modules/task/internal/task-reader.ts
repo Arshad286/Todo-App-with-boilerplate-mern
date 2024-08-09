@@ -1,3 +1,4 @@
+import ShareTaskRequestRepository from '../../share-task-request/internal/store/share-task-request-repository';
 import {
   GetAllTaskParams,
   GetTaskParams,
@@ -9,12 +10,13 @@ import {
 import TaskRepository from './store/task-repository';
 import TaskUtil from './task-util';
 
+
 export default class TaskReader {
   public static async getTaskForAccount(params: GetTaskParams): Promise<Task> {
     const taskDb = await TaskRepository.findOne({
       _id: params.taskId,
       account: params.accountId,
-      sharedTask: params.sharedTask ,
+      sharedTask: params.sharedTask ?? true,
       active: true,
     });
 
@@ -31,16 +33,12 @@ export default class TaskReader {
     const query:{
       account: string;
       active: boolean;
-      sharedTask: boolean;
+      sharedTask?: boolean;
     }= {
       account: params.accountId,
       active: true,
-      sharedTask: params.sharedTask,
     };
 
-    if (typeof params.sharedTask === 'boolean') {
-      query.sharedTask = params.sharedTask;
-    }
 
     const totalTasksCount = await TaskRepository.countDocuments(query);
 
@@ -56,4 +54,30 @@ export default class TaskReader {
 
     return tasksDb.map((taskDb) => TaskUtil.convertTaskDBToTask(taskDb));
   }
+  public static async getSharedTasksForAccount(params: GetAllTaskParams): Promise<Task []> {
+    const sharedTasks = await ShareTaskRequestRepository.find({
+      account: params.accountId,
+      active: true,
+    });
+    
+    const taskIds = sharedTasks.map((item) => item.task);
+
+// console.log(sharedTasks);
+    const totalTasksCount = await TaskRepository.countDocuments({
+      account: params.accountId,
+      active: true,
+    });
+    
+    const paginationParams: PaginationParams = {
+      page: (params.page) ? (params.page) : 1,
+      size: (params.size) ? (params.size) : totalTasksCount,
+    };
+    const startIndex = (paginationParams.page - 1) * (paginationParams.size);
+
+    const tasksDb = await TaskRepository
+      .find({ _id:{$in:taskIds}, active: true })
+      .limit(paginationParams.size)
+      .skip(startIndex); 
+    return tasksDb.map((taskDb) => TaskUtil.convertTaskDBToTask(taskDb));
+  } 
 }
