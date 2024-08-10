@@ -10,7 +10,7 @@ export default class ShareTaskRequestWriter {
       task: params.taskId,
       account: params.accountId,
       status: params.status || ShareTaskRequestStatus.ACCEPTED,
-      sharedTask: params.sharedTask,
+      sharedTask: true,
     });
     return ShareTaskRequestUtil.convertShareTaskDBRequestToShareTaskRequest(createShareTaskRequest);
   }

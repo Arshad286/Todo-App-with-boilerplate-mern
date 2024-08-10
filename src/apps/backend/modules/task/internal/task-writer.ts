@@ -16,6 +16,7 @@ export default class TaskWriter {
       account: params.accountId,
       description: params.description,
       title: params.title,
+      sharedTask: false,
       active: true,
     });
     return TaskUtil.convertTaskDBToTask(createdTask);

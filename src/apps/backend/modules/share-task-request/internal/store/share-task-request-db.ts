@@ -35,7 +35,7 @@ export const ShareTaskRequestDBSchema: Schema = new Schema<ShareTaskRequestDB>(
 
     sharedTask: {
       type: Boolean,
-      default: false, 
+      default: true, 
     },
     
     active: {

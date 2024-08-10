@@ -38,6 +38,7 @@ export default class TaskService extends APIService {
           headers: {
             Authorization: `Bearer ${userAccessToken.token}`,
           },
+    
         },
       );
       const tasks: Task[] = (response.data as JsonObject[]).map((taskData) => new Task(taskData));

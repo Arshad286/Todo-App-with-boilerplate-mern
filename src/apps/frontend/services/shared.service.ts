@@ -1,18 +1,20 @@
 import { AccessToken, ApiResponse, ApiError } from '../types';
 import APIService from './api.service';
 import { SharedTask } from '../types/shared-task';
+import { JsonObject } from '../types/common-types';
+
 
 export default class SharedTaskService extends APIService {
   async shareTask(
     taskId: string,
     accountIds: string[],
-  ): Promise<ApiResponse<void>> {
+  ): Promise<ApiResponse<SharedTask>> {
     const userAccessToken = JSON.parse(
       localStorage.getItem('access-token') || '{}'
     ) as AccessToken;
     try {
       await this.apiClient.post(
-        '/shared-tasks/shared-task',
+        `/tasks/${taskId}/share-task-requests`,
         { taskId, accountIds },
         {
           headers: {
@@ -22,8 +24,7 @@ export default class SharedTaskService extends APIService {
       );
       return new ApiResponse(undefined, undefined);
     } catch (e) {
-      const error = e.response?.data || 'Unknown error';
-      return new ApiResponse(undefined, new ApiError(error));
+      return new ApiResponse(undefined, new ApiError(e.response.data));
     }
   }
 
@@ -32,22 +33,20 @@ export default class SharedTaskService extends APIService {
       localStorage.getItem('access-token') || '{}'
     ) as AccessToken;
     try {
-      const response = await this.apiClient.get('/shared-tasks/shared-tasks', {
+      const response = await this.apiClient.get(`/tasks`, {
         headers: {
           Authorization: `Bearer ${userAccessToken.token}`,
         },
+        params: {
+          sharedTask: 'true',
+        },
       });
-      if (Array.isArray(response.data)) {
-        const sharedTasks: SharedTask[] = response.data.map(
-          (taskData: any) => new SharedTask(taskData),
-        );
-        return new ApiResponse(sharedTasks, undefined);
-      } else {
-        return new ApiResponse(undefined, new ApiError(response.data));
-      }
+    
+      const sharedTasks: SharedTask[] = (response.data as JsonObject[]).map((taskData) => new SharedTask(taskData));
+       return new ApiResponse(sharedTasks, undefined);
+      
     } catch (e) {
-      const error = e.response?.data || 'Unknown error';
-      return new ApiResponse(undefined, new ApiError(error));
+      return new ApiResponse(undefined, new ApiError(e.response.data as JsonObject));
     }
   }
 }

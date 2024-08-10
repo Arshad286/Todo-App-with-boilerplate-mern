@@ -20,7 +20,7 @@ export class ShareTaskRequestController {
             taskId,
             accountId,
             status: req.body.status || ShareTaskRequestStatus.ACCEPTED,
-            sharedTask: req.body.sharedTask, 
+            sharedTask:true, 
           }),
         ),
       );
