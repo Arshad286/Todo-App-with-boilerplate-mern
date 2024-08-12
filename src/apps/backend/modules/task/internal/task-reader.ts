@@ -1,5 +1,4 @@
 import { Types } from 'mongoose';
-import ShareTaskRequestRepository from '../../share-task-request/internal/store/share-task-request-repository';
 import {
   GetAllTaskParams,
   GetTaskParams,
@@ -10,6 +9,7 @@ import {
 
 import TaskRepository from './store/task-repository';
 import TaskUtil from './task-util';
+import SharedTaskRequestReader from '../../share-task-request/internal/share-task-request-reader';
 
 export default class TaskReader {
   public static async getTaskForAccount(params: GetTaskParams): Promise<Task> {
@@ -41,14 +41,9 @@ export default class TaskReader {
     };
 
     if (params.sharedTask) {
-      const sharedTaskIds = await ShareTaskRequestRepository.find({
-        account: params.accountId,
-        sharedTask: true,
-        active: true,
-      }).distinct('task');
-
-      if (sharedTaskIds.length > 0) {
-        query._id = { $in: sharedTaskIds };
+      const approvedSharedTaskIds = await SharedTaskRequestReader.getApprovedSharedTasks(params.accountId);
+      if (approvedSharedTaskIds.length > 0) {
+        query._id = { $in: approvedSharedTaskIds };
       } else {
         return [];
       }
