@@ -8,21 +8,18 @@ export class ShareTaskRequest  {
   task: string | Task;
   account: string | Account;
   status: ShareTaskRequestStatus;
-  sharedTask?: boolean;
 }
 
 export type CreateShareTaskRequestParams = {
   taskId: string;
   accountId: string;
-  status:ShareTaskRequestStatus;
-  sharedTask?: boolean;
+  status: ShareTaskRequestStatus;
 };
 
 export type CreateShareTasksRequestParams = {
   taskId: string;
   accountIds: string[];
-  status:ShareTaskRequestStatus;
-  sharedTask?: boolean;
+  status: ShareTaskRequestStatus;
 };
 
 export enum ShareTaskRequestStatus {

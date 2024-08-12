@@ -5,20 +5,32 @@ import {
   Task,
   TaskNotFoundError,
   PaginationParams,
+  Query,
 } from '../types';
-
 import TaskRepository from './store/task-repository';
 import TaskUtil from './task-util';
 import SharedTaskRequestReader from '../../share-task-request/internal/share-task-request-reader';
 
 export default class TaskReader {
   public static async getTaskForAccount(params: GetTaskParams): Promise<Task> {
-    const taskDb = await TaskRepository.findOne({
-      _id: params.taskId,
-      account: params.accountId,
-      sharedTask: params.sharedTask ?? true,
-      active: true,
-    });
+    const taskId = new Types.ObjectId(params.taskId);
+
+    const query: Query = {
+      $or: [
+        {
+          account: params.accountId,
+          active: true,
+          _id: taskId,
+        },
+        {
+          _id: taskId,
+          sharedTask: true,
+          active: true,
+        },
+      ],
+    };
+
+    const taskDb = await TaskRepository.findOne(query);
 
     if (!taskDb) {
       throw new TaskNotFoundError(params.taskId);
@@ -30,26 +42,29 @@ export default class TaskReader {
   public static async getTasksForAccount(
     params: GetAllTaskParams,
   ): Promise<Task[]> {
-    const query: {
-      account: string;
-      active: boolean;
-      sharedTask?: boolean;
-      _id?: { $in?: Types.ObjectId[] };
-    } = {
-      account: params.accountId,
-      active: true,
+    const query: Query = {
+      $or: [
+        {
+          account: params.accountId,
+          active: true,
+        },
+        {
+          _id: { $in: [] },
+          active: true,
+          sharedTask: true,
+        },
+      ],
     };
 
     if (params.sharedTask) {
-      const approvedSharedTaskIds = await SharedTaskRequestReader.getApprovedSharedTasks(params.accountId);
+      const approvedSharedTaskIds =
+        await SharedTaskRequestReader.getApprovedSharedTasks(params.accountId);
       if (approvedSharedTaskIds.length > 0) {
-        query._id = { $in: approvedSharedTaskIds };
+        (query.$or[1] as { _id: { $in: Types.ObjectId[] } })._id.$in =
+          approvedSharedTaskIds;
       } else {
         return [];
       }
-    } else {
-      query.account = params.accountId;
-      query.sharedTask = false;
     }
 
     const totalTasksCount = await TaskRepository.countDocuments(query);

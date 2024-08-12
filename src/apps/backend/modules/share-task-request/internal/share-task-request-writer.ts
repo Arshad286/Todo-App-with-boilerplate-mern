@@ -9,8 +9,7 @@ export default class ShareTaskRequestWriter {
     const createShareTaskRequest = await ShareTaskRequestRepository.create({
       task: params.taskId,
       account: params.accountId,
-      status: params.status || ShareTaskRequestStatus.ACCEPTED,
-      sharedTask: true,
+      status:  ShareTaskRequestStatus.ACCEPTED,
     });
     return ShareTaskRequestUtil.convertShareTaskDBRequestToShareTaskRequest(createShareTaskRequest);
   }

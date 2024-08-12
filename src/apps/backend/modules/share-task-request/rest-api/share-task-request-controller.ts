@@ -19,8 +19,7 @@ export class ShareTaskRequestController {
           ShareTaskRequestService.createShareTaskRequest({
             taskId,
             accountId,
-            status: req.body.status || ShareTaskRequestStatus.ACCEPTED,
-            sharedTask:true, 
+            status: ShareTaskRequestStatus.ACCEPTED,
           }),
         ),
       );

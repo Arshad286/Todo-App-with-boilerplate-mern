@@ -19,7 +19,6 @@ export default class ShareTaskRequestUtil {
 
     shareTaskRequest.account = ShareTaskRequestUtil.convertAccount(shareTaskRequestDb.account);
     shareTaskRequest.status = shareTaskRequestDb.status;
-    shareTaskRequest.sharedTask = shareTaskRequestDb.sharedTask;
     return shareTaskRequest;
   }
 
