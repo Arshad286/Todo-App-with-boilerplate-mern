@@ -1,7 +1,9 @@
+import ShareTaskRequestReader from './internal/share-task-request-reader';
 import ShareTaskRequestWriter from './internal/share-task-request-writer';
 import {
  CreateShareTaskRequestParams,
-ShareTaskRequest,
+ GetAllShareTasksRequestParams,
+  ShareTaskRequest,
 } from './types';
 
 export default class SharedTaskService {
@@ -10,4 +12,10 @@ export default class SharedTaskService {
   ): Promise<ShareTaskRequest> {
     return ShareTaskRequestWriter.createShareTaskRequest(params);
   }
+
+  public static async getShareTaskRequest(
+    params: GetAllShareTasksRequestParams
+  ): Promise<ShareTaskRequest[]> {
+    return ShareTaskRequestReader.getDistinctApprovedSharedTaskRequestsByAccountId(params);
+  }  
 }

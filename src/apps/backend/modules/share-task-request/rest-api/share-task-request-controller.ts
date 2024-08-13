@@ -4,13 +4,12 @@ import ShareTaskRequestService from '../share-task-request-service';
 import {
   ShareTaskRequest,
   CreateShareTasksRequestParams,
-  ShareTaskRequestStatus,
 } from '../types';
 
 import { serializeShareRequestTaskAsJSON } from './share-task-request-serializer';
 
 export class ShareTaskRequestController {
-  createShareRequestTask = applicationController(
+  createShareTaskRequest = applicationController(
     async (req: Request<CreateShareTasksRequestParams>, res: Response) => {
       const { taskId, accountIds } = req.body;
 
@@ -19,7 +18,6 @@ export class ShareTaskRequestController {
           ShareTaskRequestService.createShareTaskRequest({
             taskId,
             accountId,
-            status: ShareTaskRequestStatus.ACCEPTED,
           }),
         ),
       );

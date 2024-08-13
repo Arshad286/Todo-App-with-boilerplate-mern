@@ -34,6 +34,5 @@ export function serializeShareRequestTaskAsJSON(shareTaskRequest: ShareTaskReque
             lastName: account.lastName,
             username: account.username,
           },
-        status: shareTaskRequest.status,
   };
 }
