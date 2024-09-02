@@ -51,11 +51,11 @@ const addCommentFn = async (
 };
 
 const updateCommentFn = async (
-  commentId: string,
   taskId: string,
+  commentId: string,
   comment: string,
 ): Promise<ApiResponse<Comment>> => {
-  return commentService.updateComments(commentId, taskId, comment);
+  return commentService.updateComments( taskId, commentId,comment);
 };
 
 const deleteCommentFn = async (

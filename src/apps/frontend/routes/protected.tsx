@@ -5,6 +5,9 @@ import routes from '../constants/routes';
 import { TaskProvider, useAccountContext } from '../contexts';
 import { Dashboard, NotFound, Tasks } from '../pages';
 import AppLayout from '../pages/app-layout/app-layout';
+import { SharedTaskProvider } from '../contexts/shared-task.provider';
+import SharedTasks from '../pages/shared-task'
+
 
 const App = () => {
   const { getAccountDetails } = useAccountContext();
@@ -33,6 +36,14 @@ export const protectedRoutes = [
           <TaskProvider>
             <Tasks />
           </TaskProvider>
+        ),
+      },
+      {
+        path: routes.SHARED_TASKS,
+        element: (
+          <SharedTaskProvider>
+            <SharedTasks/>
+          </SharedTaskProvider>
         ),
       },
       { path: '*', element: <NotFound /> },

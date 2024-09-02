@@ -51,8 +51,8 @@ const CommentList: React.FC<CommentListProps> = ({ taskId }) => {
   };
 
   const handleUpdateComment = () => {
-    if (editingCommentId && editingComment) {
-      updateComment( taskId, editingCommentId, editingComment)
+    if (editingCommentId) {
+      updateComment( editingCommentId,taskId, editingComment, )
         .then((updatedComment) => {
           setCommentsList(
             commentsList.map((comment) =>

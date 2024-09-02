@@ -55,6 +55,12 @@ const Sidebar: React.FC<SidebarProps> = ({
               setIsSidebarOpen={setIsSidebarOpen}
               title='Tasks'
             />
+              <SidebarMenuItem
+              iconPath="/assets/img/icon/tasks-sidebar-icon.svg"
+              path={routes.SHARED_TASKS}
+              setIsSidebarOpen={setIsSidebarOpen}
+              title="Shared Tasks"
+            />
           </ul>
         </nav>
       </div>

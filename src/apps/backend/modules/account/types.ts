@@ -56,6 +56,17 @@ export type GetAccountParams = {
   accountId: string;
 };
 
+export type GetAllAccountsParams = {
+  search: string;
+  page: number;
+  size: number;
+};
+
+export type PaginationParams = {
+  page: number;
+  size: number;
+};
+
 export type ResetPasswordParams = {
   accountId: string;
   newPassword: string;

@@ -6,6 +6,8 @@ import {
   InvalidCredentialsError,
   Nullable,
   PhoneNumber,
+  GetAllAccountsParams,
+  PaginationParams,
 } from '../types';
 
 import AccountUtil from './account-util';
@@ -113,5 +115,30 @@ export default class AccountReader {
     }
 
     return false;
+  }
+
+  public static async getAllAccounts(
+    params: GetAllAccountsParams,
+  ): Promise<Account[]> {
+    const paginationParams: PaginationParams = {
+      page: params.page || 1,
+      size: params.size || 10,
+    };
+    const startIndex = (paginationParams.page - 1) * paginationParams.size;
+
+    const accountsDb = await AccountRepository.find({
+      active: true,
+      $or: [
+        { firstName: { $regex: params.search, $options: 'i' } },
+        { lastName: { $regex: params.search, $options: 'i' } },
+        { username: { $regex: params.search, $options: 'i' } },
+      ],
+    })
+      .limit(paginationParams.size)
+      .skip(startIndex);
+
+    return accountsDb.map((accountDb) =>
+      AccountUtil.convertAccountDBToAccount(accountDb),
+    );
   }
 }

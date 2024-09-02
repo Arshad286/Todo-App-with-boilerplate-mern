@@ -1,4 +1,4 @@
-import { AccessToken, ApiError, ApiResponse } from '../types';
+import { AccessToken,ApiError, ApiResponse } from '../types';
 import { JsonObject } from '../types/common-types';
 import { Task } from '../types/task';
 
@@ -38,6 +38,7 @@ export default class TaskService extends APIService {
           headers: {
             Authorization: `Bearer ${userAccessToken.token}`,
           },
+    
         },
       );
       const tasks: Task[] = (response.data as JsonObject[]).map((taskData) => new Task(taskData));
@@ -83,5 +84,5 @@ export default class TaskService extends APIService {
     } catch (e) {
       return new ApiResponse(undefined, new ApiError(e.response.data as JsonObject));
     }
-  };
+  };  
 }

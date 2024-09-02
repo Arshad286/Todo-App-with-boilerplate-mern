@@ -1,5 +1,7 @@
+import { Types } from 'mongoose';
 import { ApplicationError } from '../application';
 import { HttpStatusCodes } from '../http';
+
 
 export class Task {
   id: string;
@@ -12,18 +14,20 @@ export type GetAllTaskParams = {
   accountId: string;
   page?: number;
   size?: number;
+  sharedTask?: boolean;
 };
 
 export type GetTaskParams = {
   accountId: string;
   taskId: string;
+  sharedTask?: boolean;
 };
 
 export type CreateTaskParams = {
   accountId: string;
   description: string;
   title: string;
-};
+}
 
 export type UpdateTaskParams = {
   accountId: string;
@@ -41,6 +45,17 @@ export type PaginationParams = {
   page: number;
   size: number;
 };
+
+export type QueryParams = {
+  account?: string;
+  active?: boolean;
+  _id?: Types.ObjectId | { $in: Types.ObjectId[] };
+  sharedTask?: boolean;
+}
+
+export type Query = {
+  $or?: QueryParams[];
+} & QueryParams;
 
 export enum TaskErrorCode {
   NOT_FOUND = 'TASK_ERR_01',
